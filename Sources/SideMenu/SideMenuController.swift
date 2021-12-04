@@ -127,6 +127,8 @@ open class SideMenuController: UIViewController {
         return layoutDirection == .rightToLeft
     }
 
+    public var shouldBeganPanGesture: (()->(Bool))? = nil
+
     // MARK: Initialization
 
     /// Creates a SideMenuController instance with the content view controller and menu view controller.
@@ -764,6 +766,7 @@ extension SideMenuController: UIGestureRecognizerDelegate {
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard shouldBeganPanGesture?() ?? true else { return false }
         if let velocity = panGestureRecognizer?.velocity(in: view) {
             return isValidateHorizontalMovement(for: velocity)
         }
